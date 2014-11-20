@@ -4,13 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 
-LIBS += -L"/usr/local/lib"
+LIBS += -L"/usr/lib"
 
 CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window
 CONFIG(debug, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window
 
-INCLUDEPATH += "/usr/local/include"
-DEPENDPATH += "/usr/local/include"
+INCLUDEPATH += "/usr/include"
+DEPENDPATH += "/usr/include"
 
 SOURCES += main.cpp
 

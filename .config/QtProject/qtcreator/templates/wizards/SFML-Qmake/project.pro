@@ -8,10 +8,12 @@ SOURCES += main.%CppSourceSuffix%
 
 CONFIG += c++11
 
-LIBS += -L"/usr/local/lib"
+# Adjust your library that contains libsfml*
+LIBS += -L"/usr/lib"
 
 CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window
 CONFIG(debug, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window
 
-INCLUDEPATH += "/usr/local/include"
-DEPENDPATH += "/usr/local/include"
+# Adjust your library that contains folder SFML
+INCLUDEPATH += "/usr/include"
+DEPENDPATH += "/usr/include"

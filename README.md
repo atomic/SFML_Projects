@@ -1,7 +1,16 @@
 ### C++ SFML Animation Projects
 
-# Requirements:
-- for linux , sudo apt-get install libsfml-dev
+# Requirements (sudo apt-get install):
+- libglew1.5 libjpeg62
+- g++
+- cmake
+- libjpeg-dev
+- libfreetype6-dev
+- libGLEW-dev
+- libxrandr-dev
+- libopenal-dev
+- libsndfile-dev
+- libgl1-mesa-dev
 
 # Qt template wizard
 - find where qt store configuration of template wizard
