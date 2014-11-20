@@ -1,9 +1,10 @@
-Class Projects for CS
+### C++ SFML Animation Projects
 
-1. asdasd
-2. asdasdas
-3. asdasda
+# Requirements:
+- for linux , sudo apt-get install libsfml-dev
 
-Git testing...
-
-Gunlockx : TEST TEST
+# Qt template wizard
+- find where qt store configuration of template wizard
+- in linux ./.config/QtProject/qtcreator/templates/wizards/
+- copy .config to the directory
+- Enjoy!
