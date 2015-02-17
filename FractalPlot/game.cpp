@@ -10,9 +10,10 @@
  */
 Game::Game()
     : mWindow(sf::VideoMode(1280,768), "Fractal Plot", sf::Style::Close),
-      mWalker(0), mReady(false), mDepth(0)
+      mWalker(0), mReady(false), mDepth(0), mAnimate(false), mFrameStep(0)
 {
-    vArray.setPrimitiveType(sf::LinesStrip);
+//    vArray.setPrimitiveType(sf::LinesStrip);
+    mDelay = sf::milliseconds(50);
 }
 
 /**
@@ -20,10 +21,14 @@ Game::Game()
  */
 void Game::run()
 {
+//    sf::Clock clock;
     while (mWindow.isOpen())
     {
         processEvents();
-        update();
+        if(mAnimate) {
+            sf::sleep(mDelay);
+            update();
+        }
         render();
     }
 }
@@ -62,10 +67,14 @@ void Game::fractalRecursive(sf::Vector2f A, sf::Vector2f Z, int level)
     // 2. Check Last Level
     //
     if(level == mDepth - 1) {
-        vArray[mWalker++].position = A;
-        vArray[mWalker++].position = i;
-        vArray[mWalker++].position = j;
-        vArray[mWalker++].position = k;
+        mVertices.push_back(sf::Vertex(A));
+        mVertices.push_back(sf::Vertex(i));
+        mVertices.push_back(sf::Vertex(j));
+        mVertices.push_back(sf::Vertex(k));
+//        vArray[mWalker++].position = A;
+//        vArray[mWalker++].position = i;
+//        vArray[mWalker++].position = j;
+//        vArray[mWalker++].position = k;
     } else {
     // 3. Generate
         fractalRecursive(A, i, level + 1);
@@ -76,7 +85,8 @@ void Game::fractalRecursive(sf::Vector2f A, sf::Vector2f Z, int level)
 
     // this is at the end of stack
     if(level == 0) {
-        vArray[mWalker].position = Z; // last one
+//        vArray[mWalker].position = Z; // last one
+        mVertices.push_back(sf::Vertex(Z));
         mReady = true;
     }
 }
@@ -120,40 +130,38 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
     else if (key == sf::Keyboard::K) {
         mZ += sf::Vector2f(0,10);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::I) {
+    } else if (key == sf::Keyboard::I) {
         mZ += sf::Vector2f(0,-10);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::J) {
+    } else if (key == sf::Keyboard::J) {
         mZ += sf::Vector2f(-10,0);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::L) {
+    } else if (key == sf::Keyboard::L) {
         mZ += sf::Vector2f(10,0);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::S) {
+    } else if (key == sf::Keyboard::S) {
         mA += sf::Vector2f(0,10);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::W) {
+    } else if (key == sf::Keyboard::W) {
         mA += sf::Vector2f(0,-10);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::A) {
+    } else if (key == sf::Keyboard::A) {
         mA += sf::Vector2f(-10,0);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::D) {
+    } else if (key == sf::Keyboard::D) {
         mA += sf::Vector2f(10,0);
         generateFractalPoints(mA, mZ, mDepth);
-    }
-    else if (key == sf::Keyboard::Up)
+    } else if (key == sf::Keyboard::Up)
         generateFractalPoints(mA, mZ, ++mDepth);
     else if (key == sf::Keyboard::Down) {
         mDepth -= (mDepth != 1? 1 : 0);
         generateFractalPoints(mA, mZ, mDepth);
+    } else if (key == sf::Keyboard::Space) {
+        mAnimate = (isPressed ? mAnimate : !mAnimate);
+    } else if (key == sf::Keyboard::F1) {
+        mDelay += sf::milliseconds(50);
+    } else if (key == sf::Keyboard::F2) {
+        mDelay -= sf::milliseconds(50);
     }
 }
 
@@ -165,8 +173,9 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 void Game::setDepth(const int depth)
 {
     mDepth = depth;
-    mWalker = 0;
-    vArray.resize(pow(4,depth) + 1); // why? see notes
+//    mWalker = 0;
+//    vArray.resize(pow(4,depth) + 1); // why? see notes
+    mVertices.clear();
     mReady = false;
     // because you havent calculate the fractal points yet
 }
@@ -185,6 +194,10 @@ void Game::generateFractalPoints(sf::Vector2f A, sf::Vector2f Z, const int depth
  */
 void Game::update()
 {
+    if(mFrameStep < mVertices.size())
+        mFrameStep++;
+    else
+        mFrameStep = 0;
 }
 
 /**
@@ -193,7 +206,13 @@ void Game::update()
 void Game::render()
 {
     mWindow.clear();
-    if(mReady)
-        mWindow.draw(vArray);
+    if(mReady) {
+        //        mWindow.draw(vArray);
+        if (mAnimate) {
+            mWindow.draw(&mVertices[0], mFrameStep, sf::LinesStrip);
+        } else
+            mWindow.draw(&mVertices[0], mVertices.size() - 1, sf::LinesStrip);
+    }
+
     mWindow.display();
 }

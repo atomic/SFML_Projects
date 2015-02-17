@@ -30,9 +30,15 @@ private:
     int                     mWalker; // this is used to traverse recursively
     bool                    mReady;  // to tell if fractal is ready
 
+    // animation
+    bool                    mAnimate;
+    unsigned int            mFrameStep;
+    sf::Time                mDelay;
+
     sf::Vector2f            mA;
     sf::Vector2f            mZ;
-    sf::VertexArray         vArray;
+    sf::VertexArray         vArray; // depreciated
+    std::vector<sf::Vertex> mVertices;
     sf::RenderWindow		mWindow;
 };
 
