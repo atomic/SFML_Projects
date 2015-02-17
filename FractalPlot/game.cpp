@@ -8,7 +8,7 @@
  *        and initialize objects
  */
 Game::Game()
-    : mWindow(sf::VideoMode(750,500), "SFML Application", sf::Style::Close),
+    : mWindow(sf::VideoMode(1280,768), "Fractal Plot", sf::Style::Close),
       mWalker(0), mReady(false)
 {
     // Example
@@ -60,16 +60,16 @@ void Game::fractalRecursive(sf::Vector2f A, sf::Vector2f Z, int level)
     sf::Vector2f k(2*cx/3, 2*cy/3);
     // use Joseph's Formula to find j
     sf::Vector2f j;
-    j.x = A.x + 0.5(cx) + (sqrt(3.0)/6.0)*cy;
-    j.y = A.y - 0.5(cy) - (sqrt(3.0)/6.0)*cx; // sfml y is inverted
+    j.x = A.x + 0.5*cx + (sqrt(3.0)/6.0)*cy;
+    j.y = A.y - 0.5*cy - (sqrt(3.0)/6.0)*cx; // sfml y is inverted
 
     // 2. Check Last Level
     //
     if(level == mDepth) {
-        vArray[walker++].position = A;
-        vArray[walker++].position = i;
-        vArray[walker++].position = j;
-        vArray[walker++].position = k;
+        (*vArray)[mWalker++].position = A;
+        (*vArray)[mWalker++].position = i;
+        (*vArray)[mWalker++].position = j;
+        (*vArray)[mWalker++].position = k;
     } else {
     // 3. Generate
         fractalRecursive(A, i, level + 1);
@@ -80,8 +80,8 @@ void Game::fractalRecursive(sf::Vector2f A, sf::Vector2f Z, int level)
 
     // this is at the end of stack
     if(level == 0) {
-        vArray[walker].position = Z; // last one
-        ready = true;
+        (*vArray)[mWalker].position = Z; // last one
+        mReady = true;
     }
 }
 
@@ -123,14 +123,28 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
         mWindow.close();
 }
 
+/**
+ * @brief set new depth of fractals and allocate memory for the vertices
+ *        also reset the walker
+ * @param depth of fractal
+ */
 void Game::setDepth(const int depth)
 {
-    if(ready) delete vArray; // delete previously stored points
+    if(mReady) delete vArray; // delete previously stored points
     mDepth = depth;
     mWalker = 0;
     vArray = new sf::VertexArray(sf::LinesStrip, pow(4, depth)); // why? see notes
-    ready = false;
+    mReady = false;
     // because you havent calculate the fractal points yet
+}
+
+void Game::generateFractalPoints(sf::Vector2f A, sf::Vector2f Z, const int depth)
+{
+    if(depth == mDepth) return; else {
+        setDepth(depth);
+        fractalRecursive(A,Z,0);
+        mReady = true;
+    }
 }
 
 
@@ -147,7 +161,9 @@ void Game::update()
 void Game::render()
 {
     mWindow.clear();
-    mWindow.draw(mRect);
+//    mWindow.draw(mRect);
+    if(mReady)
+        mWindow.draw(*vArray);
     mWindow.display();
 }
 
