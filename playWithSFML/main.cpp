@@ -9,11 +9,15 @@ int main()
     //create the window
     sf::RenderWindow win(sf::VideoMode(SWIDTH,SHEIGHT),"TestStuffs",sf::Style::Close);
     sf::RectangleShape rect(sf::Vector2f(50, 50));
+
     rect.setFillColor(sf::Color::Green);
     rect.setOutlineThickness(2.0);
     rect.setOutlineColor(sf::Color::Red);
+
     sf::Vector2f rPos(100,100);
+
     uint angleRot = 0;
+
     rect.setPosition(rPos);
 
     //run the program as long as the window is open
