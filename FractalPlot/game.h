@@ -30,9 +30,10 @@ private:
     int                     mWalker; // this is used to traverse recursively
     bool                    mReady;  // to tell if fractal is ready
 
-    sf::VertexArray        *vArray;
+    sf::Vector2f            mA;
+    sf::Vector2f            mZ;
+    sf::VertexArray         vArray;
     sf::RenderWindow		mWindow;
-    sf::RectangleShape      mRect;
 };
 
 #endif // GAME_H

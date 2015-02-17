@@ -1,4 +1,7 @@
 TEMPLATE = app
+CONFIG += console
+CONFIG += qt
+CONFIG += c++11
 
 SOURCES += main.cpp \
     game.cpp
@@ -6,7 +9,6 @@ SOURCES += main.cpp \
 HEADERS += \
     game.h \
 
-CONFIG += c++11
 
 LIBS += -L"/usr/loca/lib"
 
@@ -18,4 +20,3 @@ CONFIG(debug  , debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-syst
 
 INCLUDEPATH += "/usr/loca/include"
 DEPENDPATH += "/usr/loca/include"
-
