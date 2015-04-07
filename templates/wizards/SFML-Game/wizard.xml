@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wizard version="1" kind="project"
+        class="qmakeproject" firstpage="10"
+        id="R.Plain C++" category="I.Projects"
+        featuresRequired="QtSupport.Wizards.FeatureQt">
+    <icon>../SFML/sfml.png</icon>
+    <description>Create SFML with Game object.</description>
+    <displayname>SFML Game Project</displayname>;
+    <displaycategory>Non-Qt Project</displaycategory>
+    <files>
+        <file source="main.cpp" target="main.%CppSourceSuffix%" openeditor="true"/>
+        <file source="game.cpp" target="game.%CppSourceSuffix%" openeditor="true"/>
+        <file source="game.h"   target="game.%CppHeaderSuffix%" openeditor="true"/>
+        <file source="project.pro" target="%ProjectName%.pro" openproject="true"/>
+    </files>
+</wizard>

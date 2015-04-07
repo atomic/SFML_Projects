@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wizard version="1" kind="project"
+        class="qmakeproject" firstpage="10"
+        id="R.Plain C++" category="I.Projects"
+        featuresRequired="QtSupport.Wizards.FeatureQt">
+    <icon>../SFML/sfml.png</icon>
+    <description>Creates a SFML C++ project using qmake.</description>
+    <displayname>SFML C++ Project (QMake build)</displayname>;
+    <displaycategory>Non-Qt Project</displaycategory>
+    <files>
+        <file source="../SFML/main.cpp" target="main.%CppSourceSuffix%" openeditor="true"/>
+        <file source="project.pro" target="%ProjectName%.pro" openproject="true"/>
+    </files>
+</wizard>
